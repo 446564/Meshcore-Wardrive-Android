@@ -42,8 +42,10 @@ class GeohashUtils {
     return earthRadiusMiles * c;
   }
 
-  /// Check if location is valid and within max distance
+  /// Check if location is valid (basic lat/lng bounds check)
   static bool isValidLocation(LatLng pos) {
+    // Only validate that coordinates are within Earth's valid range
+    // Removed Seattle-area geofence to allow global usage
     if (pos.latitude < -90 ||
         pos.latitude > 90 ||
         pos.longitude < -180 ||
@@ -51,8 +53,7 @@ class GeohashUtils {
       return false;
     }
 
-    final distance = haversineMiles(centerPos, pos);
-    return distance <= maxDistanceMiles;
+    return true; // Valid anywhere on Earth
   }
 
   /// Calculate age in days from timestamp

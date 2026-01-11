@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
+import 'package:file_picker/file_picker.dart';
 import '../services/debug_log_service.dart';
 
 class DebugLogScreen extends StatefulWidget {
@@ -78,21 +79,37 @@ class _DebugLogScreenState extends State<DebugLogScreen> {
         return;
       }
       
-      final directory = await getExternalStorageDirectory();
-      final timestamp = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
-      final file = File('${directory!.path}/meshcore_wardrive_log_$timestamp.txt');
-      
+      // Build log content
       final buffer = StringBuffer();
       for (final log in logs) {
         final category = log.category != null ? '[${log.category}] ' : '';
         buffer.writeln('[${log.formattedTime}] $category${log.message}');
       }
       
+      // Generate filename
+      final timestamp = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
+      final fileName = 'meshcore_wardrive_log_$timestamp.txt';
+      
+      // Let user choose directory
+      final selectedDirectory = await FilePicker.platform.getDirectoryPath(
+        dialogTitle: 'Choose save location',
+      );
+      
+      if (selectedDirectory == null) {
+        // User cancelled
+        return;
+      }
+      
+      // Save file to chosen directory
+      final file = File('$selectedDirectory/$fileName');
       await file.writeAsString(buffer.toString());
       
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Logs saved to: ${file.path}')),
+          SnackBar(
+            content: Text('Logs saved to:\n$fileName'),
+            duration: const Duration(seconds: 3),
+          ),
         );
       }
     } catch (e) {
