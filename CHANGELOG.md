@@ -1,6 +1,18 @@
 # Changelog
 
-## v1.0.14 - 2026-01-14
+## v1.0.15 - 2026-01-16
+
+### Features
+- **Show Coverage Boxes Toggle**: Added toggle in settings to hide/show coverage squares on the map
+- **Smaller Sample Markers**: Reduced sample marker size by 25% (from 16px to 12px) for cleaner map display
+- **Settings Service Enhancement**: Added `getShowCoverage()` and `setShowCoverage()` methods to persist coverage visibility preference
+
+### Improvements
+- Users can now declutter the map by toggling coverage boxes on/off
+- Sample dots are less intrusive on the map while remaining visible
+- Coverage visibility setting persists between app sessions
+
+## v1.0.14 - 2026-01-16
 
 ### Features
 - **Repeater Name Display**: Added intelligent repeater name lookup that checks both discovered repeaters and LoRa service contact cache
