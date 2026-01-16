@@ -1863,7 +1863,25 @@ class _MapScreenState extends State<MapScreen> {
     );
 
     try {
-      final result = await _uploadService.uploadAllSamples();
+      // Build repeater names map from discovered repeaters and LoRa service
+      final repeaterNames = <String, String>{};
+      
+      // Add names from discovered repeaters
+      for (final repeater in _repeaters) {
+        if (repeater.name != null) {
+          repeaterNames[repeater.id] = repeater.name!;
+        }
+      }
+      
+      // Add names from LoRa service contact cache
+      final loraService = _locationService.loraCompanion;
+      for (final contact in loraService.discoveredRepeaters) {
+        if (contact.name != null && !repeaterNames.containsKey(contact.id)) {
+          repeaterNames[contact.id] = contact.name!;
+        }
+      }
+      
+      final result = await _uploadService.uploadAllSamples(repeaterNames: repeaterNames);
       
       if (mounted) {
         Navigator.pop(context); // Close loading dialog
