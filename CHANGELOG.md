@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.0.16 - 2026-01-17
+
+### Fixed
+- **CRITICAL: #meshwar channel discovery now searches all 40 channels**
+  - Previously only searched channels 0-7, missing #meshwar on higher channel numbers
+  - Extended discovery timeout from 3s to 6s to accommodate querying all channels
+  - Fixes connection issues for users with #meshwar on channels 8-39
+
 ## v1.0.15 - 2026-01-16
 
 ### Features
